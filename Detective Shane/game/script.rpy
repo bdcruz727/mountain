@@ -11,14 +11,35 @@ define m = Character("Mom", color="#33CCFF")
 define d = Character("Dad", color="#33CC00")
 define y = Character("Yoko", color="#FF0099")
 
+init:
+    transform flip:
+        linear 0.2 xzoom -1.0
+
+image shane normal = im.Scale("sprites/shane/shane normal.png", 1500, 1050)
+image shane tired = im.Scale("sprites/shane/shane tired.png", 1500, 1050)
+image shane thinking = im.Scale("sprites/shane/shane thinking.png", 1500, 1050)
+
+image mom normal = im.Scale("sprites/mom/mom normal.png", 600, 1050)
+image mom shocked = im.Scale("sprites/mom/mom shocked.png", 600, 1050)
+image mom angry = im.Scale("sprites/mom/mom angry.png", 600, 1050)
+
 image dad normal = im.Scale("sprites/dad/dad normal.png", 550, 1050)
 image dad shocked = im.Scale("sprites/dad/dad shocked.png", 550, 1000)
 image dad angry = im.Scale("sprites/dad/dad angry.png", 550, 1000)
 
-image yoko normal = im.Scale("sprites/yoko/yoko normal.png", 700, 1150)
+image yoko normal = im.Scale("sprites/yoko/yoko normal.png", 720, 1150)
 image yoko happy = im.Scale("sprites/yoko/yoko happy.png", 700, 1150)
 image yoko very happy = im.Scale("sprites/yoko/yoko very happy.png", 700, 1150)
-image yoko angry = im.Scale("sprites/yoko/yoko happy.png", 700, 1150)
+image yoko angry = im.Scale("sprites/yoko/yoko angry.png", 700, 1050)
+image yoko dying = im.Scale("sprites/yoko/yoko dying.png", 1200, 800)
+
+image andre normal = im.Scale("sprites/andre/andre normal.png", 450, 900)
+image andre happy = im.Scale("sprites/andre/andre happy.png", 450, 900)
+image andre shocked = im.Scale("sprites/andre/andre shocked.png", 550, 900)
+image andre concerned = im.Scale("sprites/andre/andre concerned.png", 450, 900)
+image andre asleep = im.Scale("sprites/andre/andre asleep.png", 300, 700)
+image andre thinking = im.Scale("sprites/andre/andre thinking.png", 400, 900)
+image andre confused = im.Scale("sprites/andre/andre confused.png", 450, 900)
 
 
 
@@ -261,7 +282,7 @@ label start:
 
     s "Yeah, I guess. There have been many incidents where I have felt unsafe like there is a ghost living in this home."
 
-    show mom concerned
+    show mom normal
     m "That's nonsense. This house is perfectly safe."
 
     s "Not from what I've experienced."
@@ -291,7 +312,6 @@ label start:
 
     hide shane
 
-    scene bg upstairs hallway night
     "Shane dashes upstairs."
 
     a "Did we hurt Shane's feelings?"
@@ -331,7 +351,6 @@ label start:
 
     s "Damn, did I really sleep while crying last night?"
 
-    scene bg upstairs hallway day
     show shane normal
 
     s "It's only 8:03am?"
@@ -339,8 +358,9 @@ label start:
     s "So, am I the only one awake?"
 
     scene bg andre room day
-    show shane normal at left
-    show andre asleep at right
+    show shane normal at right
+    show andre asleep at left:
+        rotate 30
 
     s "Andre, are you awake?"
 
@@ -356,7 +376,8 @@ label start:
 
     s "What the hell?!"
 
-    show andre startled
+    show andre shocked:
+        rotate 0
     a "Shane? What's going on?"
 
     s "I don't want to be here anymore."
@@ -392,10 +413,12 @@ label start:
 
     s "Hahaha, come!"
 
+    show yoko angry
     y "You are so silly, Shane."
 
     s "Okay, here is the spot I wanted to show you."
 
+    show yoko happy
     "Shane decorates the fountain and Yoko's face lights up."
 
     y "Shane, this is beautiful!"
@@ -410,6 +433,7 @@ label start:
 
     y "I love you!"
 
+    show yoko normal
     "Shane and Yoko kiss with happiness."
 
     scene bg black
@@ -504,7 +528,7 @@ label start:
 
     a "Mmm... okay."
 
-    scene bg livingroom day
+    scene bg livingroom
     show shane sad
 
     s "I can't find out why this house has this eerie feeling. I'm just gonna go downstairs."
@@ -595,6 +619,10 @@ label start:
 
     "Mom and Dad turn to see that Shane ran up to their room to ask them a question and eavesdropped by accident."
 
+    show mom shocked at flip
+       
+    show dad shocked
+
     "Mom and Dad have a shocked face and can't even talk."
 
     d "Shane... I- I would never..."
@@ -606,9 +634,9 @@ label start:
 
     s "How could you do this to me?"
 
-    scene bg mom dad room afternoon
+    scene bg mom dad room day
     show dad angry at right
-    show mom neutral at left
+    show mom angry at flip
 
     d "Look what you've done! Now my son thinks I am a killer, especially the killer of his own girlfriend when I'm not."
 
