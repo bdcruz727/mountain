@@ -3,21 +3,69 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
-define s = Character("Shane", color="#FFFF00")
-define sv = Character("Shane (V.O)", color="#FFCC00")
-define a = Character("Andre", color="#FF0000")
-define av = Character("Andre (V.O)", color="#FF5353")
-define m = Character("Mom", color="#33CCFF")
-define d = Character("Dad", color="#33CC00")
-define y = Character("Yoko", color="#FF0099")
+# --- Automatic Voice Playback System ---
+
+default shane_voice = 1
+default andre_voice = 1
+default mom_voice = 1
+default dad_voice = 1
+default yoko_voice = 1
+
+init python:
+
+    def play_shane_voice(event, **kwargs):
+        global shane_voice
+        if event == "show":
+            if shane_voice == 61:
+                shane_voice += 1
+            renpy.sound.play("shane%d.ogg" % shane_voice)
+            shane_voice += 1
+
+    def play_andre_voice(event, **kwargs):
+        global andre_voice
+        if event == "show":
+            renpy.sound.play("andre%d.ogg" % andre_voice)
+            andre_voice += 1
+
+    def play_mom_voice(event, **kwargs):
+        global mom_voice
+        if event == "show":
+            renpy.sound.play("mom%d.ogg" % mom_voice)
+            mom_voice += 1
+
+    def play_dad_voice(event, **kwargs):
+        global dad_voice
+        if event == "show":
+            renpy.sound.play("dad%d.ogg" % dad_voice)
+            dad_voice += 1
+
+    def play_yoko_voice(event, **kwargs):
+        global yoko_voice
+        if event == "show":
+            renpy.sound.play("yoko%d.ogg" % yoko_voice)
+            yoko_voice += 1
+
+define s = Character("Shane", color="#FFFF00", callback=play_shane_voice)
+define sv = Character("Shane (Internal)", color="#FFCC00")
+define a = Character("Andre", color="#FF0000", callback=play_andre_voice)
+define av = Character("Andre (Internal)", color="#FF5353")
+define m = Character("Mom", color="#33CCFF", callback=play_mom_voice)
+define d = Character("Dad", color="#33CC00", callback=play_dad_voice)
+define y = Character("Yoko", color="#FF0099", callback=play_yoko_voice)
 
 init:
     transform flip:
         linear 0.2 xzoom -1.0
+    transform semiright:
+        xpos 0.5
 
 image shane normal = im.Scale("sprites/shane/shane normal.png", 1500, 1050)
 image shane tired = im.Scale("sprites/shane/shane tired.png", 1500, 1050)
 image shane thinking = im.Scale("sprites/shane/shane thinking.png", 1500, 1050)
+image shane shocked = im.Scale("sprites/shane/shane shocked.png", 1500, 1050)
+image shane angry = im.Scale("sprites/shane/shane angry.png", 1500, 1050)
+image shane crying= im.Scale("sprites/shane/shane crying.png", 1500, 1050)
+image shane happy= im.Scale("sprites/shane/shane happy.png", 1500, 1050)
 
 image mom normal = im.Scale("sprites/mom/mom normal.png", 600, 1050)
 image mom shocked = im.Scale("sprites/mom/mom shocked.png", 600, 1050)
@@ -87,9 +135,10 @@ label start:
 
     scene bg driveway day with fade
     show shane normal at left
+    
     show andre normal at right
-    show mom normal
-    show dad normal
+    show mom normal at semiright
+    show dad normal at left
 
     d "Alright, everyone! We're here!"
 
@@ -120,14 +169,14 @@ label start:
     scene bg house groundfloor with fade
     show shane normal at left
     show andre normal at right
-    show mom normal
-    show dad normal
+    show mom normal at semiright
+    show dad normal at left
 
     "Shane, Andre, Mom, and Dad look around the house as they stand near the door once they walk in."
 
     a "Woah! This is so cool!"
 
-    show shane disgusted
+    show shane thinking
     sv "Hmm... interesting house..."
 
     m "Wow! This is a comfy place."
@@ -178,19 +227,19 @@ label start:
     sv "What was that? It was like something was lurking here."
 
     scene bg house groundfloor
-    show shane tired
+    show shane tired at left
 
     "Shane is quiet while walking down the stairs and has his hand on his head due to his slight headache."
 
     show andre normal at right
     a "Shane! Come join us!"
 
-    show mom normal
+    show mom normal at left
     m "Are you feeling better?"
 
     s "Yeah, just a little."
 
-    show dad normal
+    show dad normal at semiright
     d "That's great. Come, now. We are playing this board game called clue."
 
     s "Clue?"
@@ -277,12 +326,12 @@ label start:
     show shane normal at left
     s "Hi, Andre."
 
-    show dad normal
+    show dad normal at semiright
     d "Do you feel better?"
 
     s "Yeah, I guess. There have been many incidents where I have felt unsafe like there is a ghost living in this home."
 
-    show mom normal
+    show mom normal at left
     m "That's nonsense. This house is perfectly safe."
 
     s "Not from what I've experienced."
@@ -299,7 +348,7 @@ label start:
 
     a "Are you okay?"
 
-    show shane angry
+    show shane angry at left
     s "Woah, woah, woah. What is wrong with you guys? You sound like I'm the bad guy here. I am not going crazy."
 
     d "I think you should give him his medicine."
@@ -396,13 +445,13 @@ label start:
     hide shane
 
     scene bg shane room day
-    show shane distressed
+    show shane angry
 
     "Shane slams his door and slides down with his back facing it."
 
     s "I am not going crazy."
 
-    scene bg black
+    scene bg black with fade
     "Begin Flashback:"
 
     scene bg park fountain day
@@ -434,20 +483,20 @@ label start:
     y "I love you!"
 
     show yoko normal
+    play sound "kiss.ogg"
     "Shane and Yoko kiss with happiness."
 
-    scene bg black
+    scene bg black with fade
     "End Flashback:"
 
     show shane crying
 
     s "I miss her so much. That one night... that one night changed everything."
 
-    scene bg black
+    scene bg black with fade
     "Begin Flashback:"
 
-    scene bg street night
-    show shane crying at left
+    scene bg street night with fade
     show yoko dying at right
 
     "Shane is on his knees while looking at Yoko laying on his lap with blood all over her."
@@ -468,10 +517,10 @@ label start:
 
     "Shane screams out Yoko's name in the street they are on."
 
-    scene bg black
+    scene bg black with fade
     "End Flashback:"
 
-    scene bg shane room day
+    scene bg shane room day with fade
     show shane crying
 
     s "It was all because of that one night. That person who stabbed Yoko and ran off."
@@ -529,7 +578,7 @@ label start:
     a "Mmm... okay."
 
     scene bg livingroom
-    show shane sad
+    show shane thinking
 
     s "I can't find out why this house has this eerie feeling. I'm just gonna go downstairs."
 
